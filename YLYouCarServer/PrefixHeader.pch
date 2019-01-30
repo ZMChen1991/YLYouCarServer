@@ -1,0 +1,52 @@
+//
+//  PrefixHeader.pch
+//  YLYouCarServer
+//
+//  Created by lm on 2018/11/28.
+//  Copyright © 2018 Chenzhiming. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+// RGB颜色
+#define YLColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+// 随机色
+#define YLRandomColor YLColor(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
+// 字体灰
+#define YLTitleGrayColor YLColor(155.f, 155.f, 155.f)
+// 字体灰
+#define YLTitleLightGrayColor YLColor(233.f, 233.f, 233.f)
+
+// 屏幕宽高
+#define YLScreenWidth [UIScreen mainScreen].bounds.size.width
+#define YLScreenHeight [UIScreen mainScreen].bounds.size.height
+
+// 边距
+#define YLMargin 15
+#define YLTopMargin 5
+
+// 标题字体
+#define YLTitleFont [UIFont systemFontOfSize:16]
+// 常规字体
+#define YLNormalFont [UIFont systemFontOfSize:14]
+
+// 账号存储路径
+#define YLAccountPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"account.plist"]
+
+
+#import "AFNetworking.h"
+#import "YLSingleton.h"
+#import "MJExtension.h"
+#import "UITextView+Extension.h"
+#import "NSString+Extension.h"
+#import "UIImageView+WebCache.h"
+#import "MBProgressHUD.h"
+
+#import "YLGlobaVariable.h"
+
+
+#endif /* PrefixHeader_pch */

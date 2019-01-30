@@ -1,0 +1,8 @@
+target 'YLYouCarServer' do
+
+pod 'AFNetworking'
+pod 'MJExtension'
+pod 'SDWebImage'
+pod 'MBProgressHUD'
+
+end
