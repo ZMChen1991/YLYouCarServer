@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YLAllOrderController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface YLDealController : UITableViewController
+@interface YLDealController : YLAllOrderController
 
 @end
 

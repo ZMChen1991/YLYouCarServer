@@ -71,6 +71,7 @@
     [textView setPlaceholder:@"其他描述" placeholdColor:[UIColor grayColor]];
     textView.delegate = self;
     textView.returnKeyType = UIReturnKeyDone;
+    textView.editable = NO;
     [self addSubview:textView];
     self.textView = textView;
     
@@ -100,9 +101,26 @@
     
 }
 
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    NSLog(@"textViewShouldBeginEditing");
+    return YES;
+}
+
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView {
     if (self.remarksBlock) {
         self.remarksBlock(self.textView.text);
+    }
+    return YES;
+}
+
+//- (void)textViewDidEndEditing:(UITextView *)textView {
+//    NSLog(@"textViewDidEndEditing");
+//}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
     }
     return YES;
 }

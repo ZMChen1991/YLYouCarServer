@@ -30,7 +30,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         UILabel *titleLabel = [[UILabel alloc] init];
 //        titleLabel.backgroundColor = [UIColor redColor];
         titleLabel.font = [UIFont systemFontOfSize:14];
@@ -64,16 +64,18 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+    [self.detailLabel resignFirstResponder];
     if (self.writeBlock) {
         self.writeBlock(textField.text);
     }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.detailLabel resignFirstResponder];
     if (self.writeBlock) {
         self.writeBlock(textField.text);
     }
-    [self.detailLabel resignFirstResponder];
+    
     return YES;
 }
 
@@ -97,6 +99,7 @@
     }
     
 }
+
 
 - (void)setModel:(YLMessageModel *)model {
     _model = model;

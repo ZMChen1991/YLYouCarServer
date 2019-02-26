@@ -8,6 +8,8 @@
 
 #import "YLHomeController.h"
 #import "YLAllOrderController.h"
+#import "YLReservationController.h"
+#import "YLLookCarController.h"
 #import "YLSettingController.h"
 
 #import "YLSkipView.h"
@@ -29,28 +31,30 @@
 
 - (void)addControllers {
     NSArray *titles = @[@"全部", @"待约定", @"待验车",@"已上架", @"买家看车", @"已交易", @"已下架"];
-    //    NSArray *status = @[@"1", @"2", @"3", @"4", @"0"];
     YLAllOrderController *viewVC1 = [[YLAllOrderController alloc] init];
-    viewVC1.status = @"1";
-//    viewVC1.view.frame = CGRectMake(0, 0, YLScreenWidth, YLScreenHeight - 50);
-    UIViewController *viewVC2= [[UIViewController alloc] init];
-    viewVC2.view.backgroundColor = YLRandomColor;
-    UIViewController *viewVC3 = [[UIViewController alloc] init];
-    viewVC3.view.backgroundColor = YLRandomColor;
-    UIViewController *viewVC4 = [[UIViewController alloc] init];
-    viewVC4.view.backgroundColor = YLRandomColor;
-    UIViewController *viewVC5 = [[UIViewController alloc] init];
-    viewVC5.view.backgroundColor = YLRandomColor;
-    UIViewController *viewVC6 = [[UIViewController alloc] init];
-    viewVC6.view.backgroundColor = YLRandomColor;
-    UIViewController *viewVC7 = [[UIViewController alloc] init];
-    viewVC7.view.backgroundColor = YLRandomColor;
-    //    UIViewController *viewVC6 = [[UIViewController alloc] init];
-    //    viewVC3.view.backgroundColor = YLRandomColor;
-    //    UIViewController *viewVC7 = [[UIViewController alloc] init];
-    //    viewVC4.view.backgroundColor = YLRandomColor;
-    //    UIViewController *viewVC8 = [[UIViewController alloc] init];
-    //    viewVC5.view.backgroundColor = YLRandomColor;
+    viewVC1.status = @"";
+    YLReservationController *viewVC2= [[YLReservationController alloc] init];
+    viewVC2.status = @"1";
+    YLAllOrderController *viewVC3 = [[YLAllOrderController alloc] init];
+    viewVC3.status = @"2";
+    YLAllOrderController *viewVC4 = [[YLAllOrderController alloc] init];
+    viewVC4.status = @"3";
+    YLLookCarController *viewVC5 = [[YLLookCarController alloc] init];
+    viewVC5.status = @"11";
+    YLAllOrderController *viewVC6 = [[YLAllOrderController alloc] init];
+    viewVC6.status = @"4";
+    YLAllOrderController *viewVC7 = [[YLAllOrderController alloc] init];
+    viewVC7.status = @"0";
+//    UIViewController *viewVC3 = [[UIViewController alloc] init];
+//    viewVC3.view.backgroundColor = YLRandomColor;
+//    UIViewController *viewVC4 = [[UIViewController alloc] init];
+//    viewVC4.view.backgroundColor = YLRandomColor;
+//    UIViewController *viewVC5 = [[UIViewController alloc] init];
+//    viewVC5.view.backgroundColor = YLRandomColor;
+//    UIViewController *viewVC6 = [[UIViewController alloc] init];
+//    viewVC6.view.backgroundColor = YLRandomColor;
+//    UIViewController *viewVC7 = [[UIViewController alloc] init];
+//    viewVC7.view.backgroundColor = YLRandomColor;
     
     NSArray *contrls = @[viewVC1, viewVC2, viewVC3, viewVC4, viewVC5, viewVC6, viewVC7];
     YLSkipView *skip = [[YLSkipView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
@@ -63,8 +67,8 @@
     [self addChildViewController:viewVC3];
     [self addChildViewController:viewVC4];
     [self addChildViewController:viewVC5];
-    //    [self addChildViewController:viewVC6];
-    //    [self addChildViewController:viewVC7];
+    [self addChildViewController:viewVC6];
+    [self addChildViewController:viewVC7];
     //    [self addChildViewController:viewVC8];
 }
 

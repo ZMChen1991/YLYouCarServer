@@ -17,12 +17,16 @@ typedef NS_ENUM(NSInteger, YLImageControllerType) {
     YLImageControllerTypeBlemishs,
 };
 
+typedef void(^RefreshBlock)(void);
+
 @interface YLImageUploadController : UIViewController
 
 @property (nonatomic, strong) NSArray *imageUrls;
 @property (nonatomic, strong) NSString *group;
 @property (nonatomic, assign) YLImageControllerType type;
 @property (nonatomic, strong) YLAllOrderModel *allOrderModel;
+
+@property (nonatomic, copy) RefreshBlock refreshBlock;
 
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A01B71522019CFA00BC3BDA /* 占位图.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A01B71422019CFA00BC3BDA /* 占位图.png */; };
 		8A15E3DD21E876EA00BE2BDE /* YLImageUploadController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A15E3DC21E876EA00BE2BDE /* YLImageUploadController.m */; };
 		8A15E3E021E8799500BE2BDE /* YLImageUploadModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A15E3DF21E8799500BE2BDE /* YLImageUploadModel.m */; };
 		8A3E6AC721B65403008C5D6F /* YLAllOrderCellFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A3E6AC621B65403008C5D6F /* YLAllOrderCellFrame.m */; };
@@ -25,6 +26,7 @@
 		8A4A497121E734D400CD94F0 /* NSString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A4A497021E734D400CD94F0 /* NSString+Extension.m */; };
 		8A4A497421E7393800CD94F0 /* YLSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A4A497321E7393800CD94F0 /* YLSettingController.m */; };
 		8A4A497721E744F800CD94F0 /* YLDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A4A497621E744F800CD94F0 /* YLDetailModel.m */; };
+		8A8E02AA2213C07F0073B1E2 /* YLLookCarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8E02A92213C07F0073B1E2 /* YLLookCarController.m */; };
 		8AA2891321F80E900033C014 /* BaiduBCEBasic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA2890F21F80E900033C014 /* BaiduBCEBasic.framework */; };
 		8AA2891421F80E900033C014 /* BaiduBCEBOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA2891021F80E900033C014 /* BaiduBCEBOS.framework */; };
 		8AA2891521F80E900033C014 /* BaiduBCEVOD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA2891121F80E900033C014 /* BaiduBCEVOD.framework */; };
@@ -68,6 +70,7 @@
 
 /* Begin PBXFileReference section */
 		61D58427DE8F0E8B05E21E34 /* Pods-YLYouCarServer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YLYouCarServer.release.xcconfig"; path = "Target Support Files/Pods-YLYouCarServer/Pods-YLYouCarServer.release.xcconfig"; sourceTree = "<group>"; };
+		8A01B71422019CFA00BC3BDA /* 占位图.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "占位图.png"; sourceTree = "<group>"; };
 		8A15E3DB21E876EA00BE2BDE /* YLImageUploadController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLImageUploadController.h; sourceTree = "<group>"; };
 		8A15E3DC21E876EA00BE2BDE /* YLImageUploadController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLImageUploadController.m; sourceTree = "<group>"; };
 		8A15E3DE21E8799500BE2BDE /* YLImageUploadModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLImageUploadModel.h; sourceTree = "<group>"; };
@@ -105,6 +108,8 @@
 		8A4A497321E7393800CD94F0 /* YLSettingController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLSettingController.m; sourceTree = "<group>"; };
 		8A4A497521E744F800CD94F0 /* YLDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLDetailModel.h; sourceTree = "<group>"; };
 		8A4A497621E744F800CD94F0 /* YLDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLDetailModel.m; sourceTree = "<group>"; };
+		8A8E02A82213C07F0073B1E2 /* YLLookCarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLLookCarController.h; sourceTree = "<group>"; };
+		8A8E02A92213C07F0073B1E2 /* YLLookCarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLLookCarController.m; sourceTree = "<group>"; };
 		8AA2890F21F80E900033C014 /* BaiduBCEBasic.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduBCEBasic.framework; sourceTree = "<group>"; };
 		8AA2891021F80E900033C014 /* BaiduBCEBOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduBCEBOS.framework; sourceTree = "<group>"; };
 		8AA2891121F80E900033C014 /* BaiduBCEVOD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduBCEVOD.framework; sourceTree = "<group>"; };
@@ -363,6 +368,39 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		8A8E02A42213C04D0073B1E2 /* LookCar */ = {
+			isa = PBXGroup;
+			children = (
+				8A8E02A72213C0610073B1E2 /* Controller */,
+				8A8E02A62213C05C0073B1E2 /* Model */,
+				8A8E02A52213C0560073B1E2 /* View */,
+			);
+			path = LookCar;
+			sourceTree = "<group>";
+		};
+		8A8E02A52213C0560073B1E2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8A8E02A62213C05C0073B1E2 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8A8E02A72213C0610073B1E2 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8A8E02A82213C07F0073B1E2 /* YLLookCarController.h */,
+				8A8E02A92213C07F0073B1E2 /* YLLookCarController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		8AA2890E21F80E740033C014 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
@@ -396,6 +434,7 @@
 		8AC3549821AE2A0900A464AF /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				8A8E02A42213C04D0073B1E2 /* LookCar */,
 				8A71AB5E21B7B775002C3BE5 /* UpLoad */,
 				8AC354A221AE30FC00A464AF /* Deal */,
 				8AC354A121AE30F200A464AF /* CheckCar */,
@@ -645,6 +684,7 @@
 		8AD6B58121FBFBB000E73CE4 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				8A01B71422019CFA00BC3BDA /* 占位图.png */,
 				8AD6B58221FBFBC100E73CE4 /* 优卡二手车.png */,
 			);
 			path = Resource;
@@ -740,6 +780,7 @@
 				8AE1D69221A9047100726A3E /* Sources */,
 				8AE1D69321A9047100726A3E /* Frameworks */,
 				8AE1D69421A9047100726A3E /* Resources */,
+				E93EAD74F72D0AE9B5FF404C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -789,6 +830,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AD6B58321FBFBC100E73CE4 /* 优卡二手车.png in Resources */,
+				8A01B71522019CFA00BC3BDA /* 占位图.png in Resources */,
 				8AE1D6A621A9047400726A3E /* LaunchScreen.storyboard in Resources */,
 				8AE1D6A321A9047400726A3E /* Assets.xcassets in Resources */,
 			);
@@ -817,6 +859,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E93EAD74F72D0AE9B5FF404C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-YLYouCarServer/Pods-YLYouCarServer-resources.sh",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-YLYouCarServer/Pods-YLYouCarServer-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -868,6 +932,7 @@
 				8AC354CE21AE40B200A464AF /* YLDetailController.m in Sources */,
 				8AC354BE21AE31ED00A464AF /* YLDealController.m in Sources */,
 				8AA2891D21F842150033C014 /* YLSaleCarChoiceCell.m in Sources */,
+				8A8E02AA2213C07F0073B1E2 /* YLLookCarController.m in Sources */,
 				8AC354C721AE325300A464AF /* YLAllOrderModel.m in Sources */,
 				8A15E3DD21E876EA00BE2BDE /* YLImageUploadController.m in Sources */,
 				8A3E6AC721B65403008C5D6F /* YLAllOrderCellFrame.m in Sources */,

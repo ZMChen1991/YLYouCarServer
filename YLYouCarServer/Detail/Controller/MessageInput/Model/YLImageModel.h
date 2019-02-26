@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *sortNo;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *updateAt;
-
+@property (nonatomic, assign) BOOL isUpdata;
 
 @end
 

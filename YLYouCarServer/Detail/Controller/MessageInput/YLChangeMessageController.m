@@ -46,10 +46,76 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"录入车辆信息";
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
+//    [self.view addGestureRecognizer:tap];
     
     [self createTableView];
     [self yl__initData];
     [self loadData];
+}
+
+//- (void)tap {
+//    NSLog(@"tap");
+//    [self.view endEditing:YES];
+//}
+
+
+- (void)viewWillAppear:(BOOL)animated {
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)addNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)KeyboardWillShowNotification:(NSNotification *)notification {
+    NSLog(@"KeyboardWillShowNotification:%@", notification.userInfo);
+    // 获取键盘弹出的rect
+    NSValue *keyBoardBeginBounds = [[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect beginRect = [keyBoardBeginBounds CGRectValue];
+    
+    // 获取键盘弹出后的rect
+    NSValue *keyBoardEndBounds = [[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect endRect = [keyBoardEndBounds CGRectValue];
+    
+    // 获取键盘位置变化前后纵坐标Y的变化值
+    CGFloat deltaY = endRect.origin.y - beginRect.origin.y;
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        CGRect rect = self.tableView.frame;
+        rect.origin.y += deltaY;
+        self.tableView.frame = rect;
+    }];
+}
+
+- (void)KeyboardWillHideNotification:(NSNotification *)notification {
+    NSLog(@"KeyboardWillHideNotification:%@", notification.userInfo);
+    // 获取键盘弹出的rect
+    NSValue *keyBoardBeginBounds = [[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect beginRect = [keyBoardBeginBounds CGRectValue];
+    
+    // 获取键盘弹出后的rect
+    NSValue *keyBoardEndBounds = [[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect endRect = [keyBoardEndBounds CGRectValue];
+    
+    // 获取键盘位置变化前后纵坐标Y的变化值
+    CGFloat deltaY = endRect.origin.y - beginRect.origin.y;
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        CGRect rect = self.tableView.frame;
+        rect.origin.y += deltaY;
+        self.tableView.frame = rect;
+    }];
 }
 
 - (void)loadData {
@@ -186,7 +252,12 @@
     
     YLMessageModel *isBargainModel = [[YLMessageModel alloc] init];
     isBargainModel.title = @"议价";
-    isBargainModel.param = self.messageModel.isBargain;
+    if (self.messageModel.isBargain) {
+        isBargainModel.param = @"1";
+    } else {
+        isBargainModel.param = @"0";
+    }
+//    isBargainModel.param = self.messageModel.isBargain;
     isBargainModel.key = @"isBargain";
     self.isBargainModel = isBargainModel;
     
@@ -211,11 +282,16 @@
 
 - (void)createTableView {
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight - 64)];
-    
     tableView.delegate = self;
     tableView.dataSource = self;
     [self.view addSubview:tableView];
     self.tableView = tableView;
+    __weak typeof(self) weakSelf = self;
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+       // 刷新
+        [weakSelf loadData];
+        [self.tableView.mj_header endRefreshing];
+    }];
     
     YLMessageHeaderView *header = [[YLMessageHeaderView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 60)];
     self.tableView.tableHeaderView = header;
@@ -223,13 +299,14 @@
     
     YLMessageFooterView *footer = [[YLMessageFooterView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 300)];
     footer.delegate = self;
-    __weak typeof(self) weakSelf = self;
+//    __weak typeof(self) weakSelf = self;
     footer.isBargainBlock = ^(NSString * _Nonnull isBargain) {
         weakSelf.isBargainModel.param = isBargain;
     };
     footer.remarksBlock = ^(NSString * _Nonnull remarks) {
         weakSelf.remarksModel.param = remarks;
     };
+    
     self.tableView.tableFooterView = footer;
     self.footer = footer;
 }
@@ -270,14 +347,11 @@
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
             [hub removeFromSuperview];
             [NSString showMessageWithString:@"提交成功"];
-            
         } else {
             NSString *error = responseObject[@"message"];
             [hub removeFromSuperview];
             [NSString showMessageWithString:error];
-            
         }
-        
     } failed:nil];
 }
 
@@ -300,7 +374,6 @@
             } else {
                 [param setObject:model.param forKey:model.key];
             }
-            
         }
     }
     NSLog(@"%@", param);
@@ -317,14 +390,11 @@
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
             [hub removeFromSuperview];
             [NSString showMessageWithString:@"提交成功"];
-            
         } else {
             NSString *error = responseObject[@"message"];
             [hub removeFromSuperview];
             [NSString showMessageWithString:error];
-            
         }
-        
     } failed:nil];
 }
 
@@ -337,11 +407,12 @@
 }
 
 #pragma mark 循环利用cell
+//#warning 此处的cell还需要自定义2个，一个是显示label，另一个是选择类型
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     YLMessageModel *model = self.params[indexPath.section][indexPath.row];
     __weak typeof(self) weakSelf = self;
-    if (indexPath.section == 0) {
+    if (indexPath.section == 0) {// 第一组
         if (indexPath.row == 0 || indexPath.row == 2) {
             YLSaleCarWriteCell *cell = [YLSaleCarWriteCell cellWithTableView:tableView];
             cell.writeBlock = ^(NSString * _Nonnull detailTitle) {
@@ -349,7 +420,7 @@
                 [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             };
             cell.model = model;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
         } else {
             YLSaleCarChoiceCell *cell = [YLSaleCarChoiceCell cellWithTableView:tableView];
@@ -381,9 +452,9 @@
                         [cover removeFromSuperview];
                     };
                     [cover addSubview:transfer];
-                    
+
                 } else {
-                    
+
                     YLYearMonthPicker *picker = [[YLYearMonthPicker alloc] initWithFrame:CGRectMake(0, 250, YLScreenWidth, 150)];
                     if (indexPath.row == 1) {
                         picker.type = YLYearMonthTypeBefore;
@@ -403,27 +474,57 @@
                 }
             };
             cell.model = model;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
         }
-    } else if (indexPath.section == 3) {
+    } else if (indexPath.section == 3) {// 价格
         YLSaleCarWriteCell *cell = [YLSaleCarWriteCell cellWithTableView:tableView];
         cell.writeBlock = ^(NSString * _Nonnull detailTitle) {
             model.param = detailTitle;
         };
         cell.model = model;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
-    } else {
+    } else if (indexPath.section == 1) {// 车辆状况
         YLSaleCarChoiceCell *cell = [YLSaleCarChoiceCell cellWithTableView:tableView];
         cell.model = model;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    } else {
+        // 第二组和第三组
+        YLSaleCarChoiceCell *cell = [YLSaleCarChoiceCell cellWithTableView:tableView];
+        cell.choiceBlock = ^{
+            YLImageUploadController *imageUpload = [[YLImageUploadController alloc] init];
+            imageUpload.allOrderModel = self.allOrderModel;
+            if (indexPath.row == 0) {
+                imageUpload.title = @"证件图片";
+                imageUpload.group = @"license";
+                imageUpload.type = YLImageControllerTypeLicense;
+            } else if (indexPath.row == 1) {
+                imageUpload.title = @"细节图片";
+                imageUpload.group = @"vehicle";
+                imageUpload.type = YLImageControllerTypeVehicle;
+            } else {
+                imageUpload.title = @"瑕疵图片";
+                imageUpload.group = @"blemish";
+                imageUpload.type = YLImageControllerTypeBlemishs;
+            }
+            imageUpload.refreshBlock = ^{
+                // 刷新数据
+                [weakSelf loadData];
+            };
+            [weakSelf.navigationController pushViewController:imageUpload animated:YES];
+
+        };
+        cell.model = model;
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
 }
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.view endEditing:YES];
+    
     if (indexPath.section == 2) {
+        __weak typeof(self) weakSelf = self;
         YLImageUploadController *imageUpload = [[YLImageUploadController alloc] init];
         imageUpload.allOrderModel = self.allOrderModel;
         if (indexPath.row == 0) {
@@ -439,9 +540,108 @@
             imageUpload.group = @"blemish";
             imageUpload.type = YLImageControllerTypeBlemishs;
         }
+        imageUpload.refreshBlock = ^{
+            // 刷新数据
+            [weakSelf loadData];
+        };
         [self.navigationController pushViewController:imageUpload animated:YES];
     }
 }
+
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//
+//    __weak typeof(self) weakSelf = self;
+//    YLMessageModel *model = self.params[indexPath.section][indexPath.row];
+//    if (indexPath.section == 0) {
+//        if (indexPath.row == 0 || indexPath.row == 2) {
+//            YLSaleCarWriteCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//            cell.writeBlock = ^(NSString * _Nonnull detailTitle) {
+//                model.param = detailTitle;
+//                [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//            };
+//        } else {
+//            YLSaleCarChoiceCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//            cell.choiceBlock = ^{
+//                UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
+//                UIView *cover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+//                cover.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.3];
+//                [window addSubview:cover];
+//                if (indexPath.row == 7) {
+//                    YLColorView *colorView = [[YLColorView alloc] initWithFrame:CGRectMake(0, 200, YLScreenWidth, 259)];
+//                    colorView.cancelBlock = ^{
+//                        [cover removeFromSuperview];
+//                    };
+//                    colorView.colorBlock = ^(NSString * _Nonnull color) {
+//                        model.param = color;
+//                        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//                        [cover removeFromSuperview];
+//                    };
+//                    [cover addSubview:colorView];
+//                } else if (indexPath.row == 3) {
+//                    YLTransferView *transfer = [[YLTransferView alloc] initWithFrame:CGRectMake(0, 200, YLScreenWidth, 259)];
+//                    transfer.cancelBlock = ^{
+//                        [cover removeFromSuperview];
+//                    };
+//                    transfer.transferBlock = ^(NSString * _Nonnull transfer) {
+//                        NSLog(@"transfer:%@次", transfer);
+//                        model.param = transfer;
+//                        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//                        [cover removeFromSuperview];
+//                    };
+//                    [cover addSubview:transfer];
+//
+//                } else {
+//
+//                    YLYearMonthPicker *picker = [[YLYearMonthPicker alloc] initWithFrame:CGRectMake(0, 250, YLScreenWidth, 150)];
+//                    if (indexPath.row == 1) {
+//                        picker.type = YLYearMonthTypeBefore;
+//                    } else {
+//                        picker.type = YLYearMonthTypeFuture;
+//                    }
+//                    picker.cancelBlock = ^{
+//                        [cover removeFromSuperview];
+//                    };
+//                    picker.sureBlock = ^(NSString * _Nonnull licenseTime) {
+//                        NSLog(@"licenseTime:%@", licenseTime);
+//                        model.param = licenseTime;
+//                        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//                        [cover removeFromSuperview];
+//                    };
+//                    [cover addSubview:picker];
+//                }
+//            };
+//        }
+//    } else if (indexPath.section == 3) {
+//        YLSaleCarWriteCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//        cell.writeBlock = ^(NSString * _Nonnull detailTitle) {
+//            model.param = detailTitle;
+//        };
+//    }  else if (indexPath.section == 2) {
+////        __weak typeof(self) weakSelf = self;
+//        YLImageUploadController *imageUpload = [[YLImageUploadController alloc] init];
+//        imageUpload.allOrderModel = self.allOrderModel;
+//        if (indexPath.row == 0) {
+//            imageUpload.title = @"证件图片";
+//            imageUpload.group = @"license";
+//            imageUpload.type = YLImageControllerTypeLicense;
+//        } else if (indexPath.row == 1) {
+//            imageUpload.title = @"细节图片";
+//            imageUpload.group = @"vehicle";
+//            imageUpload.type = YLImageControllerTypeVehicle;
+//        } else {
+//            imageUpload.title = @"瑕疵图片";
+//            imageUpload.group = @"blemish";
+//            imageUpload.type = YLImageControllerTypeBlemishs;
+//        }
+//        imageUpload.refreshBlock = ^{
+//            // 刷新数据
+//            [weakSelf loadData];
+//        };
+//        [self.navigationController pushViewController:imageUpload animated:YES];
+//    } else {
+//
+//    }
+//}
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return self.groups[section];

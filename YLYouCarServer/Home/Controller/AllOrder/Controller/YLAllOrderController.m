@@ -29,13 +29,16 @@
     [super viewDidLoad];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
-//    self.tableView.frame = CGRectMake(0, 0, YLScreenWidth, YLScreenHeight - 50 - 64);
-    
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
     [self getLoactionData];
     [self loadData];
     
 }
 
+- (void)refreshData {
+    [self loadData];
+    [self.tableView.mj_header endRefreshing];
+}
 
 - (void)loadData {
     
@@ -44,7 +47,9 @@
 //    NSString *urlString = @"http://ucarjava.bceapp.com/sell?method=list";
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [param setValue:account.centerId forKey:@"centerId"];
-    [param setValue:@"" forKey:@"status"];
+    if (self.status) {
+        [param setValue:self.status forKey:@"status"];
+    }
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
             NSLog(@"请求成功");

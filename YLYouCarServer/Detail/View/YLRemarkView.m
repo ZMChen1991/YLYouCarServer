@@ -9,7 +9,7 @@
 #import "YLRemarkView.h"
 #import "YLCondition.h"
 
-@interface YLRemarkView ()
+@interface YLRemarkView () <UITextViewDelegate>
 
 @property (nonatomic, strong) YLCondition *otherBtn;
 
@@ -54,6 +54,8 @@
     textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     textView.layer.cornerRadius = 5;
     textView.layer.masksToBounds = YES;
+    textView.delegate = self;
+    textView.returnKeyType = UIReturnKeyDone;
     // 添加一个占位Label
     UILabel *placeHolderLabel = [[UILabel alloc] init];
     placeHolderLabel.text = @"请输入内容";
@@ -75,8 +77,18 @@
     [self addSubview:commit];
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    return YES;
+}
+
+
 - (void)commitClick {
     NSLog(@"提交");
+    [self endEditing:YES];
 }
 
 - (void)orderCarNum {

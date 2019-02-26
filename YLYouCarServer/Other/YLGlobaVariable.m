@@ -8,4 +8,5 @@
 
 #import <UIKit/UIKit.h>
 
-NSString *const YLCommandUrl = @"http://api.youkaqiche.com";
+//NSString *const YLCommandUrl = @"http://api.youkaqiche.com";
+NSString *const YLCommandUrl = @"http://ucarjava.bceapp.com";

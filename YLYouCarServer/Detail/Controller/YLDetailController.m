@@ -35,12 +35,74 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"订单详情";
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
+    [self.view addGestureRecognizer:tap];
+    
     
     [self setNav];
     [self setupUI];
     
     [self getLoactionData];
     [self loadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)KeyboardWillShowNotification:(NSNotification *)notification {
+    // 获取键盘弹出的rect
+    NSValue *keyBoardBeginBounds = [[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect beginRect = [keyBoardBeginBounds CGRectValue];
+    
+    // 获取键盘弹出后的rect
+    NSValue *keyBoardEndBounds = [[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect endRect = [keyBoardEndBounds CGRectValue];
+    
+    // 获取键盘位置变化前后纵坐标Y的变化值
+    CGFloat deltaY = endRect.origin.y - beginRect.origin.y;
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        CGRect rect = self.view.frame;
+        rect.origin.y += deltaY;
+        self.view.frame = rect;
+    }];
+}
+
+- (void)KeyboardWillHideNotification:(NSNotification *)notification {
+    // 获取键盘弹出的rect
+    NSValue *keyBoardBeginBounds = [[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect beginRect = [keyBoardBeginBounds CGRectValue];
+    
+    // 获取键盘弹出后的rect
+    NSValue *keyBoardEndBounds = [[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect endRect = [keyBoardEndBounds CGRectValue];
+    
+    // 获取键盘位置变化前后纵坐标Y的变化值
+    CGFloat deltaY = endRect.origin.y - beginRect.origin.y;
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        CGRect rect = self.view.frame;
+        rect.origin.y += deltaY;
+        self.view.frame = rect;
+    }];
+}
+
+- (void)tap {
+    NSLog(@"tap");
+    [self.view endEditing:YES];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
 }
 
 - (void)loadData {
@@ -114,29 +176,44 @@
 #pragma mark 代理
 - (void)changeCarState:(NSString *)state {
     NSLog(@"changeCarState:%@", state);
-    MBProgressHUD *hub = [[MBProgressHUD alloc] initWithView:self.view];
-    hub.detailsLabel.text = @"正在修改车辆状态,请稍后";
-    [hub showAnimated:YES];
-    [self.view addSubview:hub];
     
-    NSString *urlString = @"http://ucarjava.bceapp.com/sell?method=handle";
-    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-    [param setObject:self.detailModel.detailId forKey:@"detailId"];
-    [param setObject:self.detailModel.name forKey:@"name"];
-    [param setObject:self.detailModel.remarks forKey:@"remarks"];
-    [param setObject:state forKey:@"status"];
-    __weak typeof(self) weakSelf = self;
-    [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
-        if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
-//            NSLog(@"请求成功");
-            [weakSelf loadData];
-            [NSString showMessageWithString:@"状态修改成功"];
-            [hub removeFromSuperview];
-        } else {
-            NSLog(@"%@", responseObject[@"message"]);
-            [hub removeFromSuperview];
-        }
-    } failed:nil];
+    if ([state isEqualToString:@"3"]) {
+//        [NSString showMessageWithString:@"请录入验车信息后，点击提交，等待后台审核通过后自动上架"];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示"
+                                                                       message:@"请录入验车信息后点击提交，等待后台审核通过后自动上架"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"好的"
+                                                  style:UIAlertActionStyleCancel
+                                                handler:^(UIAlertAction * _Nonnull action) {
+                                                    NSLog(@"点击取消");
+                                                }]];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    } else {
+        MBProgressHUD *hub = [[MBProgressHUD alloc] initWithView:self.view];
+        hub.detailsLabel.text = @"正在修改车辆状态,请稍后";
+        [hub showAnimated:YES];
+        [self.view addSubview:hub];
+        
+        NSString *urlString = @"http://ucarjava.bceapp.com/sell?method=handle";
+        NSMutableDictionary *param = [NSMutableDictionary dictionary];
+        [param setObject:self.detailModel.detailId forKey:@"detailId"];
+        [param setObject:self.detailModel.name forKey:@"name"];
+        [param setObject:self.detailModel.remarks forKey:@"remarks"];
+        [param setObject:state forKey:@"status"];
+        __weak typeof(self) weakSelf = self;
+        [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
+            if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
+                //            NSLog(@"请求成功");
+                [weakSelf loadData];
+                [NSString showMessageWithString:@"状态修改成功"];
+                [hub removeFromSuperview];
+            } else {
+                NSLog(@"%@", responseObject[@"message"]);
+                [hub removeFromSuperview];
+            }
+        } failed:nil];
+    }
 }
 
 @end

@@ -29,7 +29,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         UILabel *titleLabel = [[UILabel alloc] init];
         titleLabel.font = [UIFont systemFontOfSize:14];
         titleLabel.textColor = YLColor(51.f, 51.f, 51.f);
@@ -68,11 +68,11 @@
     _detailTitle = detailTitle;
 
     CGSize titleSize = [detailTitle getSizeWithFont:[UIFont systemFontOfSize:14]];
-    CGFloat titleW = (YLScreenWidth - 2 * YLMargin)/ 2;
+    CGFloat titleW = ceilf((YLScreenWidth - 2 * YLMargin) / 2);
     if (titleSize.width > titleW ) {
         self.detailLabel.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 15 - titleW, 0, titleW, self.frame.size.height);
     } else {
-        self.detailLabel.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 15 - titleSize.width, 0, titleSize.width, self.frame.size.height);
+        self.detailLabel.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 15 - titleSize.width, 0, ceilf(titleSize.width), self.frame.size.height);
     }
     self.detailLabel.text = detailTitle;
 }
@@ -84,13 +84,13 @@
     self.label.frame = CGRectMake(15, 0, titleSize.width, self.frame.size.height);
     self.label.text = model.title;
     
-    CGSize detailSize = [model.param getSizeWithFont:[UIFont systemFontOfSize:14]];
-    CGFloat titleW = (YLScreenWidth - 2 * YLMargin)/ 2;
-    if (detailSize.width > titleW ) {
+//    CGSize detailSize = [model.param getSizeWithFont:[UIFont systemFontOfSize:14]];
+    CGFloat titleW = ceilf((YLScreenWidth - 2 * YLMargin) / 4);
+//    if (detailSize.width > titleW ) {
         self.detailLabel.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 15 - titleW, 0, titleW, self.frame.size.height);
-    } else {
-        self.detailLabel.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 15 - detailSize.width, 0, detailSize.width, self.frame.size.height);
-    }
+//    } else {
+//        self.detailLabel.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 15 - detailSize.width, 0, detailSize.width, self.frame.size.height);
+//    }
     self.detailLabel.text = model.param;
 }
 

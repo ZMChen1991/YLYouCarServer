@@ -36,14 +36,14 @@
     
     UILabel *titleL = [[UILabel alloc] init];
     titleL.frame = CGRectMake(YLMargin, YLMargin, titleLW, titleH);
-    titleL.backgroundColor = [UIColor redColor];
+//    titleL.backgroundColor = [UIColor redColor];
     titleL.textAlignment = NSTextAlignmentLeft;
     titleL.font = [UIFont systemFontOfSize:16];
     titleL.text = @"具体车型";
     [self addSubview:titleL];
     
     UILabel *title = [[UILabel alloc] init];
-    title.backgroundColor = [UIColor yellowColor];
+//    title.backgroundColor = [UIColor yellowColor];
     title.frame = CGRectMake(CGRectGetMaxX(titleL.frame) + YLMargin, YLMargin, titleW, titleH);
     title.textAlignment = NSTextAlignmentLeft;
     title.numberOfLines = 0;

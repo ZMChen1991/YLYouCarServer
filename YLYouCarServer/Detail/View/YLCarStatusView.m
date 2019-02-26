@@ -68,10 +68,7 @@
 
 - (void)btnClick:(YLCondition *)sender {
     
-    // 原选中的按钮还原成白色
-    self.selectBtn.type = YLConditionTypeWhite;
-    self.selectBtn = sender;
-    self.selectBtn.type = YLConditionTypeBlue;
+    
     NSString *state;
     NSInteger index = sender.tag - 100;
     switch (index) {
@@ -85,12 +82,22 @@
             state = [NSString stringWithFormat:@"3"];
             break;
         case 3:
-            state = [NSString stringWithFormat:@"4"];
+            state = [NSString stringWithFormat:@"0"];
             break;
             
         default:
             break;
     }
+    
+    if (index == 2) {
+        
+    } else {
+        // 原选中的按钮还原成白色
+        self.selectBtn.type = YLConditionTypeWhite;
+        self.selectBtn = sender;
+        self.selectBtn.type = YLConditionTypeBlue;
+    }
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(changeCarState:)]) {
         NSLog(@"%@", state);
         [self.delegate changeCarState:state];
